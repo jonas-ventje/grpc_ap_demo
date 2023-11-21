@@ -80,5 +80,13 @@
     <orderEntry type="library" name="Maven: com.google.errorprone:error_prone_annotations:2.14.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Maven: io.perfmark:perfmark-api:0.25.0" level="project" />
     <orderEntry type="library" name="Maven: io.netty:netty-transport-native-unix-common:4.1.79.Final" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-controls:win:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-graphics:win:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-base:win:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:19.0.2.1" level="project" />
+    <orderEntry type="library" name="Maven: org.openjfx:javafx-fxml:win:19.0.2.1" level="project" />
   </component>
 </module>

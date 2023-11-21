@@ -34,7 +34,6 @@ fun asyncHelloClient() {
 }
 
 fun main(args: Array<String>) {
-    println("test")
     asyncHelloClient()
 }
 
@@ -53,7 +52,7 @@ class HelloWorldClient(private val channel: ManagedChannel) : Closeable {
     }
 }
 
-suspend fun main(args: Array<String>) {
+suspend fun Server.main(args: Array<String>) {
     val port = 15001
 
     val channel = ManagedChannelBuilder.forAddress("localhost", port).usePlaintext().build()
