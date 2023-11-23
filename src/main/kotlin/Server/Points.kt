@@ -1,12 +1,18 @@
 package Server
 
+import Server.Models.Point
+
 class Points : IObservable {
-    val pointList: ArrayList<Point> = arrayListOf<Point>(Point(X=10, Y=10))
+    val pointList: ArrayList<Point> = arrayListOf<Point>(Point(X=10.0, Y=10.0))
 
     fun addPoint(point: Point){
-        pointList.add(point)
-        sendUpdateEvent()
+        synchronized(this){
+            pointList.add(point)
+            sendUpdateEvent()
+        }
     }
+
+
 
     override val observers: ArrayList<IObserver> =  ArrayList()
 

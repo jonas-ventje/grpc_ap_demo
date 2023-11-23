@@ -15,10 +15,11 @@ import javafx.util.Duration
 
 
 fun helloServer() {
-    val helloService = HelloService()
+    //val helloService = HelloService()
+    val pointService = PointService()
     val server = ServerBuilder
         .forPort(15001)
-        .addService(helloService)
+        .addService(pointService)
         .build()
 
     Runtime.getRuntime().addShutdownHook(Thread {
