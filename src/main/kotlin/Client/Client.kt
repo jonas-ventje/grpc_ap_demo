@@ -2,11 +2,8 @@ package Client
 
 import EmptyDTO
 import PointDTO
-import PointServiceGrpc
 import PointServiceGrpcKt
-import Server.IObserver
-import Server.MyJavaFXApplication
-import Server.Points
+import com.google.protobuf.Empty
 import io.grpc.ManagedChannel
 import io.grpc.ManagedChannelBuilder
 import io.grpc.stub.StreamObserver
@@ -16,17 +13,21 @@ import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.MouseEvent
-import javafx.scene.paint.Color
 import javafx.stage.Stage
 import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import java.io.Closeable
+import java.math.BigInteger
 import java.util.concurrent.TimeUnit
+
 
 class ClientJavaFX : Application(){
     lateinit var gc: GraphicsContext
     lateinit var channel: ManagedChannel
     lateinit var client: PointClient
+    lateinit var canvas: Canvas;
 
     override fun start(p0: Stage?) {
         channel = ManagedChannelBuilder.forAddress("localhost", 15001)
@@ -38,15 +39,18 @@ class ClientJavaFX : Application(){
 
         p0?.setTitle("Drawing Operations Test")
         val root = Group()
-        val canvas = Canvas(600.0, 600.0)
+        canvas = Canvas(600.0, 600.0)
         gc = canvas.getGraphicsContext2D()
         root.getChildren().add(canvas)
         p0?.setScene(Scene(root))
         p0?.show()
 
-        canvas.setOnMouseClicked { event: MouseEvent ->
+
+        canvas.setOnMouseMoved { event: MouseEvent ->
+            val x = event.x
+            val y = event.y
             GlobalScope.launch {
-                client.addPoint()
+                client.addPoint(PointDTO.newBuilder().setX(x).setY(y).build());
             }
         }
     }
@@ -82,13 +86,14 @@ class ClientJavaFX : Application(){
 
 }*/
 
+
+
 class PointClient(private val channel: ManagedChannel) : Closeable {
     private val stub: PointServiceGrpcKt.PointServiceCoroutineStub =
         PointServiceGrpcKt.PointServiceCoroutineStub(channel)
 
-    suspend fun addPoint() {
-        val request = PointDTO.newBuilder().setX(40.0).setY(40.0).build()
-        val response = stub.addPoint(request)
+    suspend fun addPoint(point: PointDTO) {
+        val response = stub.addPoint(point)
         //println("Received: ${response.message}")
     }
 
