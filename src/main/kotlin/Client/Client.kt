@@ -15,8 +15,8 @@ import javafx.scene.canvas.GraphicsContext
 import javafx.scene.input.MouseEvent
 import javafx.stage.Stage
 import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.io.Closeable
 import java.math.BigInteger
@@ -45,46 +45,20 @@ class ClientJavaFX : Application(){
         p0?.setScene(Scene(root))
         p0?.show()
 
-
-        canvas.setOnMouseMoved { event: MouseEvent ->
+        val mouseMovements = MutableSharedFlow<PointDTO>()
+        canvas.setOnMouseClicked { event ->
             val x = event.x
             val y = event.y
+            println("test")
             GlobalScope.launch {
-                client.addPoint(PointDTO.newBuilder().setX(x).setY(y).build());
+                mouseMovements.emit(PointDTO.newBuilder().setX(x).setY(y).build())
             }
+        }
+        GlobalScope.launch {
+            client.addStream(mouseMovements)
         }
     }
 }
-
-/*fun asyncHelloClient() {
-    val channel = ManagedChannelBuilder.forAddress("localhost", 15001)
-        .usePlaintext()
-        .build()
-
-    PointServiceGrpc.newStub(channel).addPoint(
-        PointDTO.newBuilder()
-            .setX(50.0)
-            .setY(50.0)
-            .build(),
-        object : StreamObserver<EmptyDTO> {
-            override fun onNext(response: EmptyDTO?) {
-                println("response")
-            }
-
-            override fun onError(throwable: Throwable?) {
-                println("error")
-                throwable?.printStackTrace()
-            }
-
-            override fun onCompleted() {
-                println("Completed!")
-            }
-        }
-    )
-
-    channel.shutdown().awaitTermination(5, TimeUnit.SECONDS)
-
-}*/
 
 
 
@@ -94,7 +68,10 @@ class PointClient(private val channel: ManagedChannel) : Closeable {
 
     suspend fun addPoint(point: PointDTO) {
         val response = stub.addPoint(point)
-        //println("Received: ${response.message}")
+    }
+
+    suspend fun addStream(flow :Flow<PointDTO>){
+        stub.addPointStream(flow);
     }
 
     override fun close() {
