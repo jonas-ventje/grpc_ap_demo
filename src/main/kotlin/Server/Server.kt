@@ -47,11 +47,10 @@ class MyJavaFXApplication : IObserver, Application(){
 
     private fun drawShapes(gc: GraphicsContext) {
         gc.clearRect(0.0, 0.0, gc.canvas.width, gc.canvas.height);
-        gc.fill = Color.GREEN
-        gc.stroke = Color.BLUE
         gc.lineWidth = 5.0
         Points.getInstance().pointList.forEach{point ->
-            gc.fillOval(point.X.toDouble(), point.Y.toDouble(), 30.0, 30.0)
+            gc.fill = if(point.amount>1) Color.GREEN else Color.BLUE
+            gc.fillOval(point.X, point.Y, 30.0, 30.0)
         }
     }
 
