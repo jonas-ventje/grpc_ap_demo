@@ -1,21 +1,16 @@
 package Server
 
 import io.grpc.ServerBuilder
-import javafx.animation.KeyFrame
-import javafx.animation.Timeline
 import javafx.application.Application
-import javafx.event.ActionEvent
 import javafx.scene.Group
 import javafx.scene.Scene
 import javafx.scene.canvas.Canvas
 import javafx.scene.canvas.GraphicsContext
 import javafx.scene.paint.Color
 import javafx.stage.Stage
-import javafx.util.Duration
 
 
 fun helloServer() {
-    //val helloService = HelloService()
     val pointService = PointService()
     val server = ServerBuilder
         .forPort(15001)
